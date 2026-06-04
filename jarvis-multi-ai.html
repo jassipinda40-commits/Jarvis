@@ -176,7 +176,7 @@ const PROVIDERS={
     baseUrl:"https://api.groq.com/openai/v1/chat/completions",keyHint:"gsk_...",
     getLink:"https://console.groq.com/keys",note:"FREE tier! Ultra-fast inference."},
   gemini:{name:"Gemini",fullName:"Google Gemini",icon:"✨",color:"#4285f4",free:true,
-    models:["gemini-1.5-flash","gemini-1.5-pro","gemini-pro"],
+    models:["gemini-2.0-flash","gemini-2.0-flash-lite","gemini-1.5-flash-latest","gemini-1.5-pro-latest","gemini-2.5-flash-preview-05-20"],
     baseUrl:"https://generativelanguage.googleapis.com/v1beta",keyHint:"AIzaSy...",
     getLink:"https://aistudio.google.com/apikey",note:"FREE tier! Google AI."},
   mistral:{name:"Mistral",fullName:"Mistral AI",icon:"🌊",color:"#ff7000",free:false,
@@ -461,7 +461,7 @@ function Setup({onReady}){
         const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-calls":"true"},body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:10,messages:[{role:"user",content:"Hi"}]})});
         if(!r.ok){const e=await r.json();throw new Error(e?.error?.message||`Status ${r.status}`);}
       }else if(prov==="gemini"){
-        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${k}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:"Hi"}]}],generationConfig:{maxOutputTokens:10}})});
+        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selModel}:generateContent?key=${k}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:"Hi"}]}],generationConfig:{maxOutputTokens:10}})});
         if(!r.ok){const e=await r.json();throw new Error(e?.error?.message||`Status ${r.status}`);}
       }else if(prov==="cohere"){
         const r=await fetch("https://api.cohere.ai/v1/chat",{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${k}`},body:JSON.stringify({model:selModel,message:"Hi",max_tokens:10})});
